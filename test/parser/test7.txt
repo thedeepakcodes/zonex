@@ -1,0 +1,9 @@
+$ORIGIN inherit.com.
+$TTL 1h
+
+@       IN  A       192.0.2.1
+        IN  AAAA    2001:db8::1
+www     IN  CNAME   @
+        IN  TXT     "inherited owner www TXT"
+mail    5m  IN  MX  10 mail.inherit.com.
+        IN  MX      20 backup.inherit.com.

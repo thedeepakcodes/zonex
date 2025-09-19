@@ -1,0 +1,46 @@
+{
+  "name": "zonex",
+  "version": "1.0.0",
+  "description": "Zonex - Library for parsing and generating DNS zone files in compliance with RFC standards.",
+  "main": "dist/index.cjs.js",
+  "module": "dist/index.esm.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "rollup -c",
+    "clean": "rm -rf dist",
+    "prepack": "npm run build",
+    "test": "ts-node tests/index.test.ts"
+  },
+  "keywords": [
+    "typescript",
+    "dns",
+    "zone",
+    "bind",
+    "library",
+    "utilities",
+    "parser",
+    "generator"
+  ],
+  "author": "Deepak K. <thedeepakcodes@gmail.com> (https://github.com/thedeepakcodes)",
+  "contributors": [
+    {
+      "name": "Sandeep K.",
+      "email": "thesandeepcodes@gmail.com",
+      "url": "https://github.com/thesandeepcodes"
+    }
+  ],
+  "license": "MIT",
+  "homepage": "https://www.npmjs.com/package/zonex",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/thedeepakcodes/zonex.git"
+  },
+  "devDependencies": {
+    "@rollup/plugin-typescript": "^10.0.0",
+    "@types/node": "^24.5.1",
+    "rollup": "^3.0.0",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.9.2",
+    "tslib": "^2.8.1"
+  }
+}

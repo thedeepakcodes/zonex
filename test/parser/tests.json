@@ -1,0 +1,581 @@
+[
+  {
+    "name": "SOA and NS at apex",
+    "input": "$ORIGIN example.com.\n$TTL 86400\n\n@   IN SOA ns1.example.com. hostmaster.example.com. (\n        2025091801 ; serial\n        7200       ; refresh\n        3600       ; retry\n        1209600    ; expire\n        3600 )     ; minimum\n\n    IN NS ns1.example.com.\n    IN NS ns2.example.com.",
+    "expected": [
+      {
+        "name": "example.com.",
+        "ttl": 86400,
+        "class": "IN",
+        "type": "SOA",
+        "rdata": "ns1.example.com. hostmaster.example.com. 2025091801 7200 3600 1209600 3600",
+        "mname": "ns1.example.com.",
+        "rname": "hostmaster.example.com.",
+        "serial": 2025091801,
+        "refresh": 7200,
+        "retry": 3600,
+        "expire": 1209600,
+        "minimum": 3600
+      },
+      {
+        "name": "example.com.",
+        "ttl": 86400,
+        "class": "IN",
+        "type": "NS",
+        "rdata": "ns1.example.com.",
+        "host": "ns1.example.com."
+      },
+      {
+        "name": "example.com.",
+        "ttl": 86400,
+        "class": "IN",
+        "type": "NS",
+        "rdata": "ns2.example.com.",
+        "host": "ns2.example.com."
+      }
+    ]
+  },
+  {
+    "name": "Owner name inheritance with multiple A",
+    "input": "$ORIGIN test.com.\n$TTL 600\n\nwww     IN A 192.0.2.1\n        IN A 192.0.2.2",
+    "expected": [
+      {
+        "name": "www.test.com.",
+        "ttl": 600,
+        "class": "IN",
+        "type": "A",
+        "rdata": "192.0.2.1",
+        "address": "192.0.2.1"
+      },
+      {
+        "name": "www.test.com.",
+        "ttl": 600,
+        "class": "IN",
+        "type": "A",
+        "rdata": "192.0.2.2",
+        "address": "192.0.2.2"
+      }
+    ]
+  },
+  {
+    "name": "Apex MX with @ and blank",
+    "input": "$ORIGIN site.com.\n$TTL 3600\n\n@   IN MX 10 mail.site.com.\n    IN MX 20 mail2.site.com.",
+    "expected": [
+      {
+        "name": "site.com.",
+        "ttl": 3600,
+        "class": "IN",
+        "type": "MX",
+        "rdata": "10 mail.site.com.",
+        "priority": 10,
+        "exchange": "mail.site.com."
+      },
+      {
+        "name": "site.com.",
+        "ttl": 3600,
+        "class": "IN",
+        "type": "MX",
+        "rdata": "20 mail2.site.com.",
+        "priority": 20,
+        "exchange": "mail2.site.com."
+      }
+    ]
+  },
+  {
+    "name": "Relative vs FQDN names",
+    "input": "$ORIGIN rel.com.\n$TTL 300\n\nwww     IN CNAME server\nserver  IN A 198.51.100.5\nftp.rel.com. IN A 198.51.100.6",
+    "expected": [
+      {
+        "name": "www.rel.com.",
+        "ttl": 300,
+        "class": "IN",
+        "type": "CNAME",
+        "rdata": "server.rel.com.",
+        "target": "server.rel.com."
+      },
+      {
+        "name": "server.rel.com.",
+        "ttl": 300,
+        "class": "IN",
+        "type": "A",
+        "rdata": "198.51.100.5",
+        "address": "198.51.100.5"
+      },
+      {
+        "name": "ftp.rel.com.",
+        "ttl": 300,
+        "class": "IN",
+        "type": "A",
+        "rdata": "198.51.100.6",
+        "address": "198.51.100.6"
+      }
+    ]
+  },
+  {
+    "name": "Multiple TXT strings concatenation",
+    "input": "$ORIGIN txt.com.\n$TTL 3600\n\nspf IN TXT \"v=spf1\" \" include:_spf.google.com\" \" ~all\"",
+    "expected": [
+      {
+        "name": "spf.txt.com.",
+        "ttl": 3600,
+        "class": "IN",
+        "type": "TXT",
+        "rdata": "v=spf1  include:_spf.google.com  ~all",
+        "text": "v=spf1  include:_spf.google.com  ~all"
+      }
+    ]
+  },
+  {
+    "name": "SOA record with full fields",
+    "input": "$ORIGIN example.com.\n$TTL 86400\n\n@   IN SOA ns1.example.com. hostmaster.example.com. (\n        2025091801 ; serial\n        7200       ; refresh\n        3600       ; retry\n        1209600    ; expire\n        3600 )     ; minimum",
+    "expected": [
+      {
+        "name": "example.com.",
+        "ttl": 86400,
+        "class": "IN",
+        "type": "SOA",
+        "rdata": "ns1.example.com. hostmaster.example.com. 2025091801 7200 3600 1209600 3600",
+        "mname": "ns1.example.com.",
+        "rname": "hostmaster.example.com.",
+        "serial": 2025091801,
+        "refresh": 7200,
+        "retry": 3600,
+        "expire": 1209600,
+        "minimum": 3600
+      }
+    ]
+  },
+  {
+    "name": "Apex MX with multiple priorities",
+    "input": "$ORIGIN site.com.\n$TTL 3600\n\n@   IN MX 10 mail.site.com.\n    IN MX 20 mail2.site.com.",
+    "expected": [
+      {
+        "name": "site.com.",
+        "ttl": 3600,
+        "class": "IN",
+        "type": "MX",
+        "rdata": "10 mail.site.com.",
+        "priority": 10,
+        "exchange": "mail.site.com."
+      },
+      {
+        "name": "site.com.",
+        "ttl": 3600,
+        "class": "IN",
+        "type": "MX",
+        "rdata": "20 mail2.site.com.",
+        "priority": 20,
+        "exchange": "mail2.site.com."
+      }
+    ]
+  },
+  {
+    "name": "Relative vs FQDN names",
+    "input": "$ORIGIN rel.com.\n$TTL 300\n\nwww     IN CNAME server\nserver  IN A 198.51.100.5\nftp.rel.com. IN A 198.51.100.6",
+    "expected": [
+      {
+        "name": "www.rel.com.",
+        "ttl": 300,
+        "class": "IN",
+        "type": "CNAME",
+        "rdata": "server.rel.com.",
+        "target": "server.rel.com."
+      },
+      {
+        "name": "server.rel.com.",
+        "ttl": 300,
+        "class": "IN",
+        "type": "A",
+        "rdata": "198.51.100.5",
+        "address": "198.51.100.5"
+      },
+      {
+        "name": "ftp.rel.com.",
+        "ttl": 300,
+        "class": "IN",
+        "type": "A",
+        "rdata": "198.51.100.6",
+        "address": "198.51.100.6"
+      }
+    ]
+  },
+  {
+    "name": "Multiple TXT strings concatenation",
+    "input": "$ORIGIN txt.com.\n$TTL 3600\n\nspf IN TXT \"v=spf1\" \" include:_spf.google.com\" \" ~all\"",
+    "expected": [
+      {
+        "name": "spf.txt.com.",
+        "ttl": 3600,
+        "class": "IN",
+        "type": "TXT",
+        "rdata": "v=spf1  include:_spf.google.com  ~all",
+        "text": "v=spf1  include:_spf.google.com  ~all"
+      }
+    ]
+  },
+  {
+    "name": "TXT with preserved spaces",
+    "input": "$ORIGIN odd.com.\n$TTL 60\n\nrecord IN TXT \"   some   text   with   spaces   \"",
+    "expected": [
+      {
+        "name": "record.odd.com.",
+        "ttl": 60,
+        "class": "IN",
+        "type": "TXT",
+        "rdata": "   some   text   with   spaces   ",
+        "text": "some   text   with   spaces"
+      }
+    ]
+  },
+  {
+    "name": "TXT with escaped quotes",
+    "input": "$ORIGIN escape.com.\n$TTL 3600\n\nnote IN TXT \"This is a \\\"quoted\\\" text\"",
+    "expected": [
+      {
+        "name": "note.escape.com.",
+        "ttl": 3600,
+        "class": "IN",
+        "type": "TXT",
+        "rdata": "This is a \\\"quoted\\\" text",
+        "text": "This is a \\\"quoted\\\" text"
+      }
+    ]
+  },
+  {
+    "name": "Long multi-line DKIM key",
+    "input": "$ORIGIN dkimmail.com.\n$TTL 3600\n\ndefault._domainkey IN TXT (\n\"v=DKIM1; k=rsa; p=MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQC\"\n\"9uYTGNiBNtZCnIiCiMGniCvQxhw3zskMgTX7sjHWyujRdoXZiAyZw8XDhXLwucNyfrcMhtV2fx701w1roT18JD1lBEZTgG3ZUZS4gnQu1LrRf0l4m618r6ZRO5UJKR1NU5eLr+ZOzi+XEcok4H2MazQn1zjZHwFntoBmy1JzEEQIDAQAB\"\n)",
+    "expected": [
+      {
+        "name": "default._domainkey.dkimmail.com.",
+        "ttl": 3600,
+        "class": "IN",
+        "type": "TXT",
+        "rdata": "v=DKIM1; k=rsa; p=MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQC 9uYTGNiBNtZCnIiCiMGniCvQxhw3zskMgTX7sjHWyujRdoXZiAyZw8XDhXLwucNyfrcMhtV2fx701w1roT18JD1lBEZTgG3ZUZS4gnQu1LrRf0l4m618r6ZRO5UJKR1NU5eLr+ZOzi+XEcok4H2MazQn1zjZHwFntoBmy1JzEEQIDAQAB",
+        "text": "v=DKIM1; k=rsa; p=MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQC 9uYTGNiBNtZCnIiCiMGniCvQxhw3zskMgTX7sjHWyujRdoXZiAyZw8XDhXLwucNyfrcMhtV2fx701w1roT18JD1lBEZTgG3ZUZS4gnQu1LrRf0l4m618r6ZRO5UJKR1NU5eLr+ZOzi+XEcok4H2MazQn1zjZHwFntoBmy1JzEEQIDAQAB"
+      }
+    ]
+  },
+  {
+    "name": "AAAA record for IPv6",
+    "input": "$ORIGIN ipv6.com.\n$TTL 3600\n\nhost IN AAAA 2001:0db8:85a3:0000:0000:8a2e:0370:7334",
+    "expected": [
+      {
+        "name": "host.ipv6.com.",
+        "ttl": 3600,
+        "class": "IN",
+        "type": "AAAA",
+        "rdata": "2001:0db8:85a3:0000:0000:8a2e:0370:7334",
+        "address": "2001:0db8:85a3:0000:0000:8a2e:0370:7334"
+      }
+    ]
+  },
+  {
+    "name": "SRV record for service discovery",
+    "input": "$ORIGIN srv.com.\n$TTL 3600\n\n_ldap._tcp IN SRV 0 5 389 ldap.srv.com.",
+    "expected": [
+      {
+        "name": "_ldap._tcp.srv.com.",
+        "ttl": 3600,
+        "class": "IN",
+        "type": "SRV",
+        "rdata": "0 5 389 ldap.srv.com.",
+        "priority": 0,
+        "weight": 5,
+        "port": 389,
+        "target": "ldap.srv.com."
+      }
+    ]
+  },
+  {
+    "name": "PTR record for reverse DNS",
+    "input": "$ORIGIN 1.0.0.127.in-addr.arpa.\n$TTL 3600\n\n@ IN PTR localhost.",
+    "expected": [
+      {
+        "name": "1.0.0.127.in-addr.arpa.",
+        "ttl": 3600,
+        "class": "IN",
+        "type": "PTR",
+        "rdata": "localhost.",
+        "ptrdname": "localhost."
+      }
+    ]
+  },
+  {
+    "name": "LOC record with defaults",
+    "input": "$ORIGIN geo.com.\n$TTL 3600\n\nhost IN LOC 37 46 29 N 122 25 10 W",
+    "expected": [
+      {
+        "name": "host.geo.com.",
+        "ttl": 3600,
+        "class": "IN",
+        "type": "LOC",
+        "rdata": "37 46 29 N 122 25 10 W",
+        "latitude": { "degrees": 37, "minutes": 46, "seconds": 29, "hemisphere": "N" },
+        "longitude": { "degrees": 122, "minutes": 25, "seconds": 10, "hemisphere": "W" },
+        "altitude": 0,
+        "size": 1,
+        "horizPrecision": 10000,
+        "vertPrecision": 10
+      }
+    ]
+  },
+  {
+    "name": "SPF record",
+    "input": "$ORIGIN spf.com.\n$TTL 3600\n\nhost IN SPF \"v=spf1 include:_spf.google.com ~all\"",
+    "expected": [
+      {
+        "name": "host.spf.com.",
+        "ttl": 3600,
+        "class": "IN",
+        "type": "SPF",
+        "rdata": "v=spf1 include:_spf.google.com ~all",
+        "text": "v=spf1 include:_spf.google.com ~all"
+      }
+    ]
+  },
+  {
+    "name": "NAPTR record",
+    "input": "$ORIGIN naptr.com.\n$TTL 3600\n\nsip NAPTR 100 10 \"U\" \"E2U+sip\" \".\"",
+    "expected": [
+      {
+        "name": "sip.naptr.com.",
+        "ttl": 3600,
+        "class": "IN",
+        "type": "NAPTR",
+        "rdata": "100 10 \"U\" \"E2U+sip\" \".\"",
+        "order": 100,
+        "preference": 10,
+        "flags": "U",
+        "service": "E2U+sip",
+        "regexp": ".",
+        "replacement": "."
+      }
+    ]
+  },
+  {
+    "name": "SVCB record",
+    "input": "$ORIGIN svc.com.\n$TTL 3600\n\n_https._tcp IN SVCB 1 target1.example.net. alpn=h2,h3 port=443",
+    "expected": [
+      {
+        "name": "_https._tcp.svc.com.",
+        "ttl": 3600,
+        "class": "IN",
+        "type": "SVCB",
+        "rdata": "1 target1.example.net. alpn=h2,h3 port=443",
+        "priority": 1,
+        "target": "target1.example.net.",
+        "params": "alpn=h2,h3 port=443"
+      }
+    ]
+  },
+  {
+    "name": "HTTPS record",
+    "input": "$ORIGIN https.com.\n$TTL 3600\n\n_443._tcp IN HTTPS 1 web.https.com. alpn=h2 port=443",
+    "expected": [
+      {
+        "name": "_443._tcp.https.com.",
+        "ttl": 3600,
+        "class": "IN",
+        "type": "HTTPS",
+        "rdata": "1 web.https.com. alpn=h2 port=443",
+        "priority": 1,
+        "target": "web.https.com.",
+        "params": "alpn=h2 port=443"
+      }
+    ]
+  },
+  {
+    "name": "DNSKEY record",
+    "input": "$ORIGIN dnskey.com.\n$TTL 3600\n\n@ IN DNSKEY 256 3 8 AwEAAa...==",
+    "expected": [
+      {
+        "name": "dnskey.com.",
+        "ttl": 3600,
+        "class": "IN",
+        "type": "DNSKEY",
+        "rdata": "256 3 8 AwEAAa...==",
+        "flags": 256,
+        "protocol": 3,
+        "algorithm": 8,
+        "publicKey": "AwEAAa...=="
+      }
+    ]
+  },
+  {
+    "name": "DS record",
+    "input": "$ORIGIN ds.com.\n$TTL 3600\n\n@ IN DS 60485 8 2 49FD46E6C4B45C55D4AC",
+    "expected": [
+      {
+        "name": "ds.com.",
+        "ttl": 3600,
+        "class": "IN",
+        "type": "DS",
+        "rdata": "60485 8 2 49FD46E6C4B45C55D4AC",
+        "keyTag": 60485,
+        "algorithm": 8,
+        "digestType": 2,
+        "digest": "49FD46E6C4B45C55D4AC"
+      }
+    ]
+  },
+  {
+    "name": "TLSA record",
+    "input": "$ORIGIN tlsa.com.\n$TTL 3600\n\n_443._tcp IN TLSA 3 1 1 ABCDEF1234567890",
+    "expected": [
+      {
+        "name": "_443._tcp.tlsa.com.",
+        "ttl": 3600,
+        "class": "IN",
+        "type": "TLSA",
+        "rdata": "3 1 1 ABCDEF1234567890",
+        "usage": 3,
+        "selector": 1,
+        "matchingType": 1,
+        "certificateAssociationData": "ABCDEF1234567890"
+      }
+    ]
+  },
+  {
+    "name": "SSHFP record",
+    "input": "$ORIGIN sshfp.com.\n$TTL 3600\n\nhost IN SSHFP 1 1 1234567890ABCDEF",
+    "expected": [
+      {
+        "name": "host.sshfp.com.",
+        "ttl": 3600,
+        "class": "IN",
+        "type": "SSHFP",
+        "rdata": "1 1 1234567890ABCDEF",
+        "algorithm": 1,
+        "fingerprintType": 1,
+        "fingerprint": "1234567890ABCDEF"
+      }
+    ]
+  },
+  {
+    "name": "IPSECKEY record",
+    "input": "$ORIGIN ipsec.com.\n$TTL 3600\n\nvpn IN IPSECKEY 1 0 0 192.0.2.1",
+    "expected": [
+      {
+        "name": "vpn.ipsec.com.",
+        "ttl": 3600,
+        "class": "IN",
+        "type": "IPSECKEY",
+        "rdata": "1 0 0 192.0.2.1",
+        "precedence": 1,
+        "gatewayType": 0,
+        "algorithm": 0,
+        "gateway": "192.0.2.1",
+        "publicKey": ""
+      }
+    ]
+  },
+  {
+    "name": "ALIAS record",
+    "input": "$ORIGIN alias.com.\n$TTL 3600\n\nwww IN ALIAS host.alias.com.",
+    "expected": [
+      {
+        "name": "www.alias.com.",
+        "ttl": 3600,
+        "class": "IN",
+        "type": "ALIAS",
+        "rdata": "host.alias.com.",
+        "target": "host.alias.com."
+      }
+    ]
+  },
+  {
+    "name": "Mixed record types",
+    "input": "$ORIGIN mixed.com.\n$TTL 3600\n\nwww     IN A 192.0.2.10\nmail    IN MX 10 mail.mixed.com.\n_smtp   IN SRV 0 5 25 mail.mixed.com.\nhost    IN AAAA 2001:db8::1\nalias   IN CNAME www.mixed.com.\ngeo     IN LOC 37 46 29 N 122 25 10 W 15m\ncert1   IN CERT 1 1 1 ABCDEF123456\nsmimea1 IN SMIMEA 3 1 1 1234ABCD",
+    "expected": [
+      {
+        "name": "www.mixed.com.",
+        "ttl": 3600,
+        "class": "IN",
+        "type": "A",
+        "rdata": "192.0.2.10",
+        "address": "192.0.2.10"
+      },
+      {
+        "name": "mail.mixed.com.",
+        "ttl": 3600,
+        "class": "IN",
+        "type": "MX",
+        "rdata": "10 mail.mixed.com.",
+        "priority": 10,
+        "exchange": "mail.mixed.com."
+      },
+      {
+        "name": "_smtp.mixed.com.",
+        "ttl": 3600,
+        "class": "IN",
+        "type": "SRV",
+        "rdata": "0 5 25 mail.mixed.com.",
+        "priority": 0,
+        "weight": 5,
+        "port": 25,
+        "target": "mail.mixed.com."
+      },
+      {
+        "name": "host.mixed.com.",
+        "ttl": 3600,
+        "class": "IN",
+        "type": "AAAA",
+        "rdata": "2001:db8::1",
+        "address": "2001:db8::1"
+      },
+      {
+        "name": "alias.mixed.com.",
+        "ttl": 3600,
+        "class": "IN",
+        "type": "CNAME",
+        "rdata": "www.mixed.com.",
+        "target": "www.mixed.com."
+      },
+      {
+        "name": "geo.mixed.com.",
+        "ttl": 3600,
+        "class": "IN",
+        "type": "LOC",
+        "rdata": "37 46 29 N 122 25 10 W 15m",
+        "latitude": {
+          "degrees": 37,
+          "minutes": 46,
+          "seconds": 29,
+          "hemisphere": "N"
+        },
+        "longitude": {
+          "degrees": 122,
+          "minutes": 25,
+          "seconds": 10,
+          "hemisphere": "W"
+        },
+        "altitude": 15,
+        "size": 1,
+        "horizPrecision": 10000,
+        "vertPrecision": 10
+      },
+      {
+        "name": "cert1.mixed.com.",
+        "ttl": 3600,
+        "class": "IN",
+        "type": "CERT",
+        "rdata": "1 1 1 ABCDEF123456",
+        "certType": 1,
+        "keyTag": 1,
+        "algorithm": 1,
+        "certificate": "ABCDEF123456"
+      },
+      {
+        "name": "smimea1.mixed.com.",
+        "ttl": 3600,
+        "class": "IN",
+        "type": "SMIMEA",
+        "rdata": "3 1 1 1234ABCD",
+        "usage": 3,
+        "selector": 1,
+        "matchingType": 1,
+        "certAssociationData": "1234ABCD"
+      }
+    ]
+  }
+]

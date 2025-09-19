@@ -1,0 +1,15 @@
+$ORIGIN crazyzone.com.
+$TTL 10m
+
+@           IN A       192.0.2.50
+            IN AAAA    2001:db8::50
+www         IN CNAME   @
+            IN TXT     "www TXT record"
+
+; fractional TTL, inherited owner
+            1.25h IN MX 10 mail.crazyzone.com.
+
+api         2w   IN A   192.0.2.60
+backup      3.5d IN A   192.0.2.61
+; inherits "backup"
+            IN TXT "backup TXT inherited"

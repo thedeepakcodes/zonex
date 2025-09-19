@@ -1,0 +1,9 @@
+$ORIGIN dkimmail.com.
+$TTL 3600
+
+default._domainkey IN TXT (
+  "v=DKIM1; k=rsa; p=MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQC"
+  "9uYTGNiBNtZCnIiCiMGniCvQxhw3zskMgTX7sjHWyujRdoXZiAyZw8XDhXLw"
+  "ucNyfrcMhtV2fx701w1roT18JD1lBEZTgG3ZUZS4gnQu1LrRf0l4m618r6ZRO"
+  "5UJKR1NU5eLr+ZOzi+XEcok4H2MazQn1zjZHwFntoBmy1JzEEQIDAQAB"
+)

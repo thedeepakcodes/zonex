@@ -1,0 +1,123 @@
+;; SOA Record
+example.com	3600	IN	SOA	martha.ns.cloudflare.com. dns.cloudflare.com. 2050976517 10000 2400 604800 3600
+
+;; NS Records
+example.com.	86400	IN	NS	marth.ns.cloudflare.com.
+example.com.	86400	IN	NS	ridg.ns.cloudflare.com.
+
+;; A Records
+example.com.	1	IN	A	192.168.1.36
+
+;; MX Records
+@ 3600 IN MX 10 mail1.example.com. ; Primary mail server
+@ 3600 IN MX 20 mail2.example.com. ; Backup mail server
+
+;; AAAA Records
+www 3600 IN AAAA 2001:db8::1 ; IPv6 for www
+api 3600 IN AAAA 2001:db8::2 ; IPv6 for API
+
+;; CNAME Records
+ftp 3600 IN CNAME www ; FTP alias
+blog 3600 IN CNAME www ; Blog alias
+
+;; TXT Records
+@ 3600 IN TXT "v=spf1 include:_spf.example.com ~all" ; SPF for domain
+_dmarc 3600 IN TXT "v=DMARC1; p=none; rua=mailto:dmarc@example.com" ; DMARC
+
+;; SRV Record
+_sip._tcp.example.com. 3600 IN SRV 10 60 5060 sipserver.example.com.
+
+;; CAA Records
+@ 3600 IN CAA 0 issue "letsencrypt.org" ; allow Let's Encrypt to issue certificates
+@ 3600 IN CAA 0 issuewild "comodoca.com" ; allow wildcard certs from Comodo
+@ 3600 IN CAA 0 iodef "mailto:security@example.com" ; reporting email for CAA violations
+www 3600 IN CAA 0 issue "digicert.com" ; specific CAA for www subdomain
+api 3600 IN CAA 0 issue "sectigo.com" ; CAA for api subdomain
+
+;; SPF Records
+@ 3600 IN SPF "v=spf1 include:_spf.google.com ~all"
+
+;; LOC Records
+host1 3600 IN LOC 37 46 29 N 122 25 10 W ; defaults: altitude=0m, size=1m, hprec=10000m, vprec=10m
+host2 3600 IN LOC 37 46 29 N 122 25 10 W 15m ; altitude=15m, defaults for size/precision
+host3 3600 IN LOC 37 46 29 N 122 25 10 W 20m 5m 50m 5m ; fully specified
+host4 3600 IN LOC 51 30 N 0 7 W ; fractional seconds omitted, uses defaults for altitude/size/precision
+host5 3600 IN LOC 40 42 51 N 74 0 21 W 10m ; altitude only, defaults for size/precision
+host6 3600 IN LOC 33 51 31 S 151 12 50 E -5m ; negative altitude (below sea level), defaults for size/precision
+host7 3600 IN LOC 48 51 29 N 2 17 40 E 25m 2m 20m 2m ; fully specified with positive altitude
+host8 3600 IN LOC 37 46 29.5 N 122 25 10.75 W ; fractional seconds, defaults for altitude/size/precision
+
+;; DS Records
+example.com.     3600   IN DS 60485 8 2 49FD46E6C4B45C55D4AC
+sub.example.com. 3600   IN DS 12345 8 2 5B2E3C4F1D6A7B8C9D0E
+
+;; DNSKEY Records
+example.com.    3600    IN  DNSKEY  257 3 8 AwEAAc3dF1Q2gK3v8sX9J1Rk...
+sub.example.com. 3600   IN  DNSKEY  257 3 8 AwEAAz9vQ8rX1Kj2L7sYpZ...
+
+;; TLSA Records
+_443._tcp.example.com.    3600    IN  TLSA  3 1 1 2D3F4A5B6C7D8E9F0A1B2C3D4E5F6A7B8C9D0E1F2A3B4C5D6E7F8A9B0C1D2E3
+
+;; SSHFP Records
+host1.example.com.    3600    IN  SSHFP  1 1 123456789abcdef123456789abcdef12345678
+
+;; HTTPS Records
+_443._tcp.host1.example.com.    3600    IN  HTTPS  1 1 "https://host1.example.com"
+
+;; IPSECKEY Records
+host1.example.com.    3600    IN  IPSECKEY 1 2 1 203.0.113.1 "AwEAAc5kJk3..."
+
+;; ALIAS Records
+alias1.example.com.    3600    IN  ALIAS  example.com.
+alias3.example.com.    3600    IN  ALIAS  mail.example.com.
+
+;; NAPTR Records
+sip1.example.com.    3600    IN  NAPTR  100 10 "U" "E2U+sip"  "!^.*$!sip:info@example.com!" .
+sip2.example.com.    3600    IN  NAPTR  200 20 "U" "E2U+email"  "!^.*$!mailto:info@example.com!" .
+tel1.example.com.    3600    IN  NAPTR  50 5 "U" "E2U+tel"  "!^.*$!tel:+1234567890!" .
+voip1.example.com.   3600    IN  NAPTR  10 100 "U" "E2U+sip"  "!^.*$!sip:support@example.com!" .
+
+;; CERT Records
+example.com.      3600 IN CERT 1 5 1 MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAt+...
+sub.example.com.  3600 IN CERT 2 3 1 MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAv...
+secure.example.com. 3600 IN CERT 1 8 1 MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAu...
+
+;; SMIMEA Records
+user1._smimecert.example.com. 3600 IN SMIMEA 3 0 1 2A3B4C5D6E7F89ABCDEF...
+user2._smimecert.example.com. 3600 IN SMIMEA 1 1 1 A1B2C3D4E5F67890ABCD...
+
+;; SVCB Records
+example.com.       3600 IN SVCB 0 svc1.example.net.
+_svc._tcp.example.com. 3600 IN SVCB 1 target1.example.net. alpn=h2,h3 port=443
+_svc._tcp.example.com. 3600 IN SVCB 2 target2.example.net. alpn=h2 mandatory=alpn ipv4hint=192.0.2.1,192.0.2.2
+_svc._tcp.example.com. 3600 IN SVCB 3 target3.example.net. alpn=h3 ipv6hint=2001:db8::1,2001:db8::2 echconfig="ABC123..."
+
+; service discovery via URI records
+_service1._tcp.example.com. 3600 IN URI 10 1 "https://service1.example.com/api"
+_service2._tcp.example.com. 3600 IN URI 20 1 "https://backup.example.com/"
+_service3._udp.example.com. 3600 IN URI 5 10 "ftp://ftp.example.com/files"
+_sip._tcp.example.com.       3600 IN URI 0 1 "sip:alice@example.com"
+_xmpp._tcp.example.com.      3600 IN URI 50 5 "xmpp:chat.example.com"
+
+;; DNAME Records
+sub.example.com.           3600 IN DNAME example.com.                 ; maps subdomain to main domain
+sub2.example.com.          3600 IN DNAME www.example.com.           ; maps to specific host
+nested.sub.example.com.    3600 IN DNAME sub.example.com.           ; nested mapping
+
+;; HINFO Records
+host1.example.com.         3600 IN HINFO "Intel Core i7" "Windows 11"
+host2.example.com.         3600 IN HINFO "AMD Ryzen 9" "Linux"
+host3.example.com.         3600 IN HINFO Intel "MacOS Monterey"     ; unquoted CPU, quoted OS
+host4.example.com.         3600 IN HINFO "ARM Cortex-A72" Linux      ; quoted CPU, unquoted OS
+host5.example.com.         3600 IN HINFO "M1" "macOS Big Sur"       ; short CPU name
+
+;; OPENPGPKEY Records
+pgp1.example.com.          3600 IN OPENPGPKEY mQENBF1EXAMPLEKEY123
+pgp2.example.com.          3600 IN OPENPGPKEY mQENBF2EXAMPLEKEY456
+pgp3.example.com.          3600 IN OPENPGPKEY "mQENBF3EXAMPLEKEY789" ; quoted
+
+;; RP Records
+admin1.example.com.        3600 IN RP hostmaster.example.com. admin.example.com.
+admin2.example.com.        3600 IN RP postmaster.example.net. info.example.net.
+admin3.example.com.        3600 IN RP hostmaster.example.org. .        ; TXT domain as root
+admin4.example.com.        3600 IN RP "admin@example.com." "txt.example.com." ; quoted mailbox & TXT domain

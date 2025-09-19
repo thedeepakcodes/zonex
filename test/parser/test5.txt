@@ -1,0 +1,8 @@
+$ORIGIN geo.com.
+$TTL 7200
+
+location IN LOC 25 01 20.000 N 52 05 5.000 E 5m 5m 5m 5m
+server   IN A    198.51.100.42
+server   IN AAAA 2001:db8::42
+
+_sip._tcp IN SRV 10 60 5060 sipserver.geo.com.

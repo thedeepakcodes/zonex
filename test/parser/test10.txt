@@ -1,0 +1,11 @@
+$ORIGIN dkiminherit.com.
+$TTL 1h
+
+default._domainkey IN TXT (
+  "v=DKIM1; k=rsa;"
+  " p=MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEApZ"
+  "qfFWP3EmFZ4UXxU4J3r2jrvu3ZtB9kY7dX..."
+)
+
+; no owner → inherits "default._domainkey"
+            45m IN TXT "extra TXT for DKIM"

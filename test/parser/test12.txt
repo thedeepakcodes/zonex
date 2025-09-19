@@ -1,0 +1,6 @@
+$ORIGIN 2.0.192.in-addr.arpa.
+$TTL 3600
+
+1   IN PTR example.com.
+2   IN PTR www.example.com.
+3   IN PTR mail.example.com.

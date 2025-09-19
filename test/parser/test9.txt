@@ -1,0 +1,14 @@
+$ORIGIN txtinherit.com.
+$TTL 600
+
+@       IN  TXT "root level"
+        IN  TXT "another root TXT"
+
+spf     IN TXT (
+  "v=spf1"
+  " ip4:203.0.113.0/24"
+  " ~all"
+)
+
+; owner name inherited
+        IN  TXT "spf continuation"

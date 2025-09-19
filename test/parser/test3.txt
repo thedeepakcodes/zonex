@@ -1,0 +1,5 @@
+$ORIGIN txttest.com.
+$TTL 86400
+
+note    IN  TXT "This is a \"quoted\" value"
+spf     IN  TXT "v=spf1" " include:_spf.mailgun.org" " ~all"

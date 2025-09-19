@@ -1,0 +1,7 @@
+$ORIGIN ttltest.com.
+$TTL 30m
+
+@         IN  A    203.0.113.10
+www       1.5h IN  A 203.0.113.11
+api       2d   IN  CNAME   www
+backup    0.5w IN  A 203.0.113.12

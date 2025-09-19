@@ -1,0 +1,13 @@
+$ORIGIN edgecases.com.
+$TTL 600
+
+; root record
+@           1h  IN  A      203.0.113.10
+www         300 IN  A      203.0.113.11
+api         IN  CNAME      www.edgecases.com.
+
+; TXT split over multiple quoted strings
+spf         IN TXT "v=spf1 ip4:203.0.113.0/24" " -all"
+
+; comment after record
+mail        2d  IN MX 20   mx.edgecases.com.  ; mail server
