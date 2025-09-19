@@ -1,6 +1,6 @@
 {
   "name": "zonex-dns",
-  "version": "1.0.0",
+  "version": "1.0.2",
   "description": "Zonex - Library for parsing and generating DNS zone files in compliance with RFC standards.",
   "main": "dist/index.js",
   "module": "dist/index.js",
@@ -30,10 +30,10 @@
     }
   ],
   "license": "MIT",
-  "homepage": "https://www.npmjs.com/package/zonex",
+  "homepage": "https://www.npmjs.com/package/zonex-dns",
   "repository": {
     "type": "git",
-    "url": "https://github.com/thedeepakcodes/zonex.git"
+    "url": "https://github.com/thedeepakcodes/zonex-dns.git"
   },
   "devDependencies": {
     "@types/node": "^24.5.1",

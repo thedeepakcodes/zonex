@@ -18,11 +18,11 @@
 ## Installation
 
 ```bash
-npm install zonex
+npm install zonex-dns
 # or
-yarn add zonex
+yarn add zonex-dns
 # or
-pnpm add zonex
+pnpm add zonex-dns
 ```
 
 ---
@@ -32,7 +32,7 @@ pnpm add zonex
 ### Importing
 
 ```ts
-import zonex from "zonex";
+import zonex from "zonex-dns";
 
 const { parse, generate, toZoneFile } = zonex;
 ```
@@ -83,7 +83,7 @@ console.log(records);
 ### Generating a Zone File
 
 ```ts
-import { generate } from "zonex";
+import { generate } from "zonex-dns";
 
 const inputRecords = [
   { name: "example.com.", type: "A", ttl: 3600, class: "IN", address: "192.0.2.1" },
@@ -213,4 +213,4 @@ ZoneX is licensed under the **MIT License**.
 
 ## NPM
 
-📦 [https://www.npmjs.com/package/zonex](https://www.npmjs.com/package/zonex)
+📦 [https://www.npmjs.com/package/zonex-dns](https://www.npmjs.com/package/zonex-dns)

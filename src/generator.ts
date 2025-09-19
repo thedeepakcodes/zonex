@@ -76,7 +76,7 @@ export const toZoneFile = (dnsRecords: DNSRecordsByType, origin: string, ttl: nu
             `;; Exported:   ${new Date().toISOString()}\n` +
             `;;\n` +
             `;; Generated using: ZoneX\n` +
-            `;; NPM Package: https://github.com/thedeepakcodes/zonex.git\n` +
+            `;; NPM Package: https://github.com/thedeepakcodes/zonex-dns.git\n` +
             `;; \n` +
             `;; ==================================================\n` +
             `;;\n` +
