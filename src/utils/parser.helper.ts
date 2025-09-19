@@ -1,4 +1,4 @@
-import { DNSRecord, ParseOptions } from "../types/parser.types";
+import { DNSRecord, ParseOptions, RecordType } from "../types/parser.types";
 
 export const DEFAULT_TTL = "3600";
 export const DnsTypes = [
@@ -252,6 +252,7 @@ export const extractRawRecords = (rawRecords: string[], options?: ParseOptions):
 
             parsedRecords.push({
                 ...dnsRecord,
+                type: dnsRecord.type as RecordType,
                 name: recordName.toLowerCase(),
                 ttl: normalizeTtl(dnsRecord.ttl),
             });

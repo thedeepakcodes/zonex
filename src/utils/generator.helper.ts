@@ -1,5 +1,5 @@
 import { GenerateOptions, InputRecord } from "../types/generator.types";
-import { DNSRecord } from "../types/parser.types";
+import { DNSRecord, RecordType } from "../types/parser.types";
 import { DEFAULT_TTL, normalizeTtl } from "./parser.helper";
 
 export const CanonicalFieldOrder: Record<string, string[]> = {
@@ -55,7 +55,7 @@ export const prepareRecord = (record: InputRecord, options?: GenerateOptions): D
         name: record.name,
         ttl: normalizeTtl(record.ttl ?? options?.ttl),
         class: record.class ?? "IN",
-        type: record.type,
+        type: record.type as RecordType,
         rdata: buildRdata(record, fieldMap?.[record.type]),
     };
 };

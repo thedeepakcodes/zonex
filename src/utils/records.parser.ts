@@ -1,4 +1,4 @@
-import { DNSRecord, ParsedRecord } from "../types/parser.types";
+import { DNSRecord, ParsedRecord, RecordType } from "../types/parser.types";
 
 export const parseSOA = (dnsRecord: DNSRecord): ParsedRecord => {
     const [mname, rname, serial, refresh, retry, expire, minimum] =
@@ -6,6 +6,7 @@ export const parseSOA = (dnsRecord: DNSRecord): ParsedRecord => {
 
     return {
         ...dnsRecord,
+        type: RecordType.SOA,
         mname,
         rname,
         serial: Number(serial) || 0,
@@ -18,37 +19,43 @@ export const parseSOA = (dnsRecord: DNSRecord): ParsedRecord => {
 
 export const parseNS = (dnsRecord: DNSRecord): ParsedRecord => ({
     ...dnsRecord,
+    type: RecordType.NS,
     host: dnsRecord.rdata.trim(),
 });
 
 export const parseA = (dnsRecord: DNSRecord): ParsedRecord => ({
     ...dnsRecord,
+    type: RecordType.A,
     address: dnsRecord.rdata.trim(),
 });
 
 export const parseAAAA = (dnsRecord: DNSRecord): ParsedRecord => ({
     ...dnsRecord,
+    type: RecordType.AAAA,
     address: dnsRecord.rdata.trim(),
 });
 
 export const parseCNAME = (dnsRecord: DNSRecord): ParsedRecord => ({
     ...dnsRecord,
+    type: RecordType.CNAME,
     target: dnsRecord.rdata.trim(),
 });
 
 export const parseTXT = (dnsRecord: DNSRecord): ParsedRecord => ({
     ...dnsRecord,
+    type: RecordType.TXT,
     text: dnsRecord.rdata.trim(),
 });
 
 export const parseMX = (dnsRecord: DNSRecord): ParsedRecord => {
     const [priority, exchange] = dnsRecord.rdata.trim().split(/\s+/);
 
-    return { ...dnsRecord, priority: Number(priority), exchange };
+    return { ...dnsRecord, type: RecordType.MX, priority: Number(priority), exchange };
 };
 
 export const parsePTR = (dnsRecord: DNSRecord): ParsedRecord => ({
     ...dnsRecord,
+    type: RecordType.PTR,
     ptrdname: dnsRecord.rdata.trim(),
 });
 
@@ -57,6 +64,7 @@ export const parseSRV = (dnsRecord: DNSRecord): ParsedRecord => {
 
     return {
         ...dnsRecord,
+        type: RecordType.SRV,
         priority: Number(priority) || 0,
         weight: Number(weight) || 0,
         port: Number(port) || 0,
@@ -73,6 +81,7 @@ export const parseCAA = (dnsRecord: DNSRecord): ParsedRecord => {
 
     return {
         ...dnsRecord,
+        type: RecordType.CAA,
         flag,
         tag,
         value,
@@ -84,6 +93,7 @@ export const parseSPF = (dnsRecord: DNSRecord): ParsedRecord => {
 
     return {
         ...dnsRecord,
+        type: RecordType.SPF,
         text,
     };
 };
@@ -119,6 +129,7 @@ export const parseLOC = (dnsRecord: DNSRecord): ParsedRecord => {
 
     return {
         ...dnsRecord,
+        type: RecordType.LOC,
         latitude: { degrees: latDeg, minutes: latMin, seconds: latSec, hemisphere: latHem },
         longitude: { degrees: lonDeg, minutes: lonMin, seconds: lonSec, hemisphere: lonHem },
         altitude,
@@ -133,6 +144,7 @@ export const parseDS = (dnsRecord: DNSRecord): ParsedRecord => {
 
     return {
         ...dnsRecord,
+        type: RecordType.DS,
         keyTag: parts[0] ? Number(parts[0]) || 0 : 0,
         algorithm: parts[1] ? Number(parts[1]) || 0 : 0,
         digestType: parts[2] ? Number(parts[2]) || 0 : 0,
@@ -145,6 +157,7 @@ export const parseDNSKEY = (dnsRecord: DNSRecord): ParsedRecord => {
 
     return {
         ...dnsRecord,
+        type: RecordType.DNSKEY,
         flags: parts[0] ? Number(parts[0]) || 0 : 0,
         protocol: parts[1] ? Number(parts[1]) || 0 : 0,
         algorithm: parts[2] ? Number(parts[2]) || 0 : 0,
@@ -157,6 +170,7 @@ export const parseTLSA = (dnsRecord: DNSRecord): ParsedRecord => {
 
     return {
         ...dnsRecord,
+        type: RecordType.TLSA,
         usage: parts[0] ? Number(parts[0]) || 0 : 0,
         selector: parts[1] ? Number(parts[1]) || 0 : 0,
         matchingType: parts[2] ? Number(parts[2]) || 0 : 0,
@@ -169,6 +183,7 @@ export const parseSSHFP = (dnsRecord: DNSRecord): ParsedRecord => {
 
     return {
         ...dnsRecord,
+        type: RecordType.SSHFP,
         algorithm: parts[0] ? Number(parts[0]) || 0 : 0,
         fingerprintType: parts[1] ? Number(parts[1]) || 0 : 0,
         fingerprint: parts.slice(2).join("") || "",
@@ -189,6 +204,7 @@ export const parseHTTPS = (dnsRecord: DNSRecord): ParsedRecord => {
 
     return {
         ...dnsRecord,
+        type: RecordType.HTTPS,
         priority,
         target,
         params,
@@ -200,6 +216,7 @@ export const parseIPSECKEY = (dnsRecord: DNSRecord): ParsedRecord => {
 
     return {
         ...dnsRecord,
+        type: RecordType.IPSECKEY,
         precedence: parts[0] ? Number(parts[0]) || 0 : 0,
         gatewayType: parts[1] ? Number(parts[1]) || 0 : 0,
         algorithm: parts[2] ? Number(parts[2]) || 0 : 0,
@@ -214,6 +231,7 @@ export const parseALIAS = (dnsRecord: DNSRecord): ParsedRecord => {
 
     return {
         ...dnsRecord,
+        type: RecordType.ALIAS,
         target,
     };
 };
@@ -224,6 +242,7 @@ export const parseNAPTR = (dnsRecord: DNSRecord): ParsedRecord => {
 
     return {
         ...dnsRecord,
+        type: RecordType.NAPTR,
         order: parts[0] ? Number(parts[0]) || 0 : 0,
         preference: parts[1] ? Number(parts[1]) || 0 : 0,
         flags: parts[2] ? parts[2].replace(/"/g, "") : "",
@@ -238,6 +257,7 @@ export const parseCERT = (dnsRecord: DNSRecord): ParsedRecord => {
 
     return {
         ...dnsRecord,
+        type: RecordType.CERT,
         certType: parts[0] ? Number(parts[0]) || 0 : 0,
         keyTag: parts[1] ? Number(parts[1]) || 0 : 0,
         algorithm: parts[2] ? Number(parts[2]) || 0 : 0,
@@ -250,6 +270,7 @@ export const parseSMIMEA = (dnsRecord: DNSRecord): ParsedRecord => {
 
     return {
         ...dnsRecord,
+        type: RecordType.SMIMEA,
         usage: parts[0] ? Number(parts[0]) || 0 : 0,
         selector: parts[1] ? Number(parts[1]) || 0 : 0,
         matchingType: parts[2] ? Number(parts[2]) || 0 : 0,
@@ -266,6 +287,7 @@ export const parseSVCB = (dnsRecord: DNSRecord): ParsedRecord => {
 
     return {
         ...dnsRecord,
+        type: RecordType.SVCB,
         priority,
         target,
         params,
@@ -277,6 +299,7 @@ export const parseURI = (dnsRecord: DNSRecord): ParsedRecord => {
 
     return {
         ...dnsRecord,
+        type: RecordType.URI,
         priority: parts[0] ? Number(parts[0]) || 0 : 0,
         weight: parts[1] ? Number(parts[1]) || 0 : 0,
         target: parts[2] ? parts[2].replace(/^"|"$/g, "") : "",
@@ -287,6 +310,7 @@ export const parseDNAME = (dnsRecord: DNSRecord): ParsedRecord => {
     const target = dnsRecord.rdata.trim().replace(/^"|"$/g, "");
     return {
         ...dnsRecord,
+        type: RecordType.DNAME,
         target,
     };
 };
@@ -298,6 +322,7 @@ export const parseHINFO = (dnsRecord: DNSRecord): ParsedRecord => {
 
     return {
         ...dnsRecord,
+        type: RecordType.HINFO,
         cpu,
         os,
     };
@@ -308,6 +333,7 @@ export const parseOPENPGPKEY = (dnsRecord: DNSRecord): ParsedRecord => {
 
     return {
         ...dnsRecord,
+        type: RecordType.OPENPGPKEY,
         publicKey,
     };
 };
@@ -319,7 +345,39 @@ export const parseRP = (dnsRecord: DNSRecord): ParsedRecord => {
 
     return {
         ...dnsRecord,
+        type: RecordType.RP,
         mailbox,
         txtDomain,
     };
+};
+
+export const recordParsers: Record<RecordType, (r: DNSRecord) => ParsedRecord> = {
+    [RecordType.A]: parseA,
+    [RecordType.AAAA]: parseAAAA,
+    [RecordType.CNAME]: parseCNAME,
+    [RecordType.MX]: parseMX,
+    [RecordType.NS]: parseNS,
+    [RecordType.TXT]: parseTXT,
+    [RecordType.SOA]: parseSOA,
+    [RecordType.SRV]: parseSRV,
+    [RecordType.PTR]: parsePTR,
+    [RecordType.CAA]: parseCAA,
+    [RecordType.SPF]: parseSPF,
+    [RecordType.LOC]: parseLOC,
+    [RecordType.DS]: parseDS,
+    [RecordType.DNSKEY]: parseDNSKEY,
+    [RecordType.TLSA]: parseTLSA,
+    [RecordType.SSHFP]: parseSSHFP,
+    [RecordType.HTTPS]: parseHTTPS,
+    [RecordType.IPSECKEY]: parseIPSECKEY,
+    [RecordType.ALIAS]: parseALIAS,
+    [RecordType.NAPTR]: parseNAPTR,
+    [RecordType.CERT]: parseCERT,
+    [RecordType.SMIMEA]: parseSMIMEA,
+    [RecordType.SVCB]: parseSVCB,
+    [RecordType.URI]: parseURI,
+    [RecordType.DNAME]: parseDNAME,
+    [RecordType.HINFO]: parseHINFO,
+    [RecordType.OPENPGPKEY]: parseOPENPGPKEY,
+    [RecordType.RP]: parseRP,
 };

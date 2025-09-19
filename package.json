@@ -1,6 +1,6 @@
 {
   "name": "zonex-dns",
-  "version": "1.0.2",
+  "version": "1.1.0",
   "description": "Zonex - Library for parsing and generating DNS zone files in compliance with RFC standards.",
   "main": "dist/index.js",
   "module": "dist/index.js",
